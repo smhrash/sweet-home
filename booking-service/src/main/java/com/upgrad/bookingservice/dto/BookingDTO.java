@@ -10,7 +10,6 @@ import java.util.Date;
 public class BookingDTO {
 
     private Integer bookingId;
-
     private Date fromDate;
     private Date toDate;
     private String aadharNumber;
