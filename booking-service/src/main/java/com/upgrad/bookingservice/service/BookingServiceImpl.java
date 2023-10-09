@@ -7,46 +7,58 @@ import com.upgrad.bookingservice.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.upgrad.bookingservice.dto.PaymentRequest;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
-public class BookingServiceImpl implements BookingService{
+public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepository bookingRepository;
+   // @Value("${paymentService.url}")
+    private String paymentServiceUrl;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
-
     @Override
     public BookingInfoEntity createBooking(BookingInfoEntity booking) {
-        List<String> roomNumbers = getRandomNumbers(booking.getNumOfRooms());
-        booking.setRoomNumbers(String.join(",", roomNumbers));
-        int roomPrice = 1000 * booking.getNumOfRooms() * (int) ChronoUnit.DAYS.between(booking.getFromDate(), booking.getToDate());
-        booking.setRoomPrice(roomPrice);
-        return bookingRepository.save(booking);
+        // Validate if fromDate and toDate are present
+        if (booking.getFromDate() == null || booking.getToDate() == null) {
+            throw new IllegalArgumentException("Booking dates can't be null");
+        }
+
+        try {
+            // Get random room numbers
+            List<String> roomNumbers = getRandomNumbers(booking.getNumOfRooms());
+            booking.setRoomNumbers(String.join(",", roomNumbers));
+
+            // Calculate room price
+            long days = ChronoUnit.DAYS.between(booking.getFromDate(), booking.getToDate());
+            int roomPrice = 1000 * booking.getNumOfRooms() * (int) days;
+            booking.setRoomPrice(roomPrice);
+
+            return bookingRepository.save(booking);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
     @Override
     public PaymentDTO processPayment(int bookingId, PaymentRequest paymentRequest) {
 
-        String paymentServiceUrl = "http://localhost:8083/payment/transaction";
+        paymentServiceUrl = "http://localhost:8083/payment/transaction";
 
         // Communicate with the Payment Service
         PaymentDTO response = restTemplate.postForObject(paymentServiceUrl, paymentRequest, PaymentDTO.class);
 
         // Now update the booking information with the transaction ID received from the payment service
         BookingInfoEntity booking = bookingRepository.findById(bookingId).orElse(null);
-        if(booking != null && response != null) {
+        if (booking != null && response != null) {
             booking.setTransactionId(response.getTransactionId());
             bookingRepository.save(booking);
         }

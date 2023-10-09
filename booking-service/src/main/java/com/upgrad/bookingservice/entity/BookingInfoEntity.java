@@ -14,21 +14,17 @@ public class BookingInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingId;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDateTime fromDate;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDateTime toDate;
-    @Column( length=15, nullable = true , unique = true)
+    @Column(length = 20)
     private String aadharNumber;
     @Column(nullable = false)
     private int numOfRooms;
-    @Column( length=15, nullable = false)
-    private  String roomNumbers;
-    @Column(nullable = false)
+    @Column(length = 10)
+    private String roomNumbers;
     private int roomPrice;
-    @Column(nullable = false)
     private int transactionId;
-    @Column(nullable = true)
     private LocalDateTime bookedOn;
-
 }

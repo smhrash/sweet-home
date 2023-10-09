@@ -1,33 +1,37 @@
 package com.upgrad.bookingservice.controller;
 
+import com.upgrad.bookingservice.dto.BookingDTO;
 import com.upgrad.bookingservice.dto.ErrorResponse;
 import com.upgrad.bookingservice.dto.PaymentDTO;
 import com.upgrad.bookingservice.dto.PaymentRequest;
 import com.upgrad.bookingservice.entity.BookingInfoEntity;
 import com.upgrad.bookingservice.service.BookingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping(value = "/hotel")
 public class BookingController {
-
     @Autowired
-    private final BookingService bookingService;
-
+    private  BookingService bookingService;
     @Autowired
-    public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private  ModelMapper modelMapper;
 
     @PostMapping(value = "/booking", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookingInfoEntity> createBooking(@RequestBody BookingInfoEntity booking) {
-        BookingInfoEntity savedBooking = bookingService.createBooking(booking);
-        return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
+    public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookingDTO) {
+        bookingDTO.setBookedOn(LocalDateTime.now()); // Set the current date-time
+        BookingInfoEntity newBooking = modelMapper.map(bookingDTO, BookingInfoEntity.class);
+        BookingInfoEntity savedBooking = bookingService.createBooking(newBooking);
+        BookingDTO savedBookingDTO = modelMapper.map(savedBooking, BookingDTO.class);
+
+        return new ResponseEntity<>(savedBookingDTO, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/booking/{bookingId}/transaction", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -44,6 +48,5 @@ public class BookingController {
 
         return new ResponseEntity<>(transactionResponse, HttpStatus.OK);
     }
-
 
 }
