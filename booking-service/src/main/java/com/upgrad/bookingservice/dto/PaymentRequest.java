@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class PaymentRequest {
 
+    private int bookingId;
     private String paymentMode;
     private String upiId;
     private String cardNumber;

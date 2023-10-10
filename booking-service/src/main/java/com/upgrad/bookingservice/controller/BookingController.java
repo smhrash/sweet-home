@@ -41,12 +41,16 @@ public class BookingController {
             return new ResponseEntity<>(new ErrorResponse("Invalid mode of payment", 400), HttpStatus.BAD_REQUEST);
         }
 
-        PaymentDTO transactionResponse = bookingService.processPayment(bookingId, paymentRequest);
-        if (transactionResponse == null) {
-            return new ResponseEntity<>(new ErrorResponse("Invalid Booking Id", 400), HttpStatus.BAD_REQUEST);
+        try {
+            PaymentDTO transactionResponse = bookingService.processPayment(bookingId, paymentRequest);
+            if (transactionResponse == null) {
+                return new ResponseEntity<>(new ErrorResponse("Invalid Booking Id", 400), HttpStatus.BAD_REQUEST);
+            }
+            BookingInfoEntity updatedBooking = bookingService.getBookingById(bookingId);  // New method to fetch updated booking.
+            BookingDTO savedBookingDTO = modelMapper.map(updatedBooking, BookingDTO.class);
+            return new ResponseEntity<>(savedBookingDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage(), 500), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(transactionResponse, HttpStatus.OK);
     }
-
 }

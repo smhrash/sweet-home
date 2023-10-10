@@ -11,4 +11,6 @@ public interface BookingService {
     BookingInfoEntity createBooking(BookingInfoEntity booking);
 
     PaymentDTO processPayment(int bookingId, PaymentRequest paymentRequest);
+
+    BookingInfoEntity getBookingById(int bookingId);
 }
