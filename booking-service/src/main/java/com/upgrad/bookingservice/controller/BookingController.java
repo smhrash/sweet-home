@@ -15,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 
 @RestController
@@ -44,12 +44,11 @@ public class BookingController {
 
     @PostMapping(value = "/booking/{bookingId}/transaction", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity processPayment(@PathVariable(name = "bookingId") int bookingId, @RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<?> processPayment(@PathVariable(name = "bookingId") int bookingId, @RequestBody PaymentRequest paymentRequest) {
 
         if (!"UPI".equals(paymentRequest.getPaymentMode()) && !"CARD".equals(paymentRequest.getPaymentMode())) {
             return new ResponseEntity<>(new ErrorResponse("Invalid mode of payment", 400), HttpStatus.BAD_REQUEST);
         }
-
         try {
             PaymentDTO transactionResponse = bookingService.processPayment(bookingId, paymentRequest);
             if (transactionResponse == null) {

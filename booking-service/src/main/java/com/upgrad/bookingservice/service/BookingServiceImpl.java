@@ -30,6 +30,7 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private RestTemplate restTemplate;
 
+
     @Override
     public BookingInfoEntity createBooking(BookingInfoEntity booking) {
         // Validate if fromDate and toDate are present
@@ -75,12 +76,11 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-
     @Override
     public BookingInfoEntity getBookingById(int bookingId) {
-        return bookingRepository.findById(bookingId).orElse(null);
+        Optional<BookingInfoEntity> bookingOptional = bookingRepository.findById(bookingId);
+        return bookingOptional.orElse(null);
     }
-
 
     private List<String> getRandomNumbers(int count) {
         Random rand = new Random();

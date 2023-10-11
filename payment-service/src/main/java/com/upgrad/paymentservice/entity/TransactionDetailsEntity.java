@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "transaction")
 public class TransactionDetailsEntity {
 
     @Id

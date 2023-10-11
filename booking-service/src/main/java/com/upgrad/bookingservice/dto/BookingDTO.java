@@ -18,5 +18,4 @@ public class BookingDTO {
     private int roomPrice;
     private int transactionId;
     private LocalDateTime bookedOn;
-
 }

@@ -12,6 +12,5 @@ public class PaymentDTO {
     public PaymentDTO(int transactionId) {
         this.transactionId = transactionId;
     }
-
 }
 
