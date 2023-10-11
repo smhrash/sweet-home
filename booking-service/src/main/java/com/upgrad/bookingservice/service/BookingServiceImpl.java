@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
 import org.slf4j.Logger;
 
 @Service
@@ -65,18 +66,14 @@ public class BookingServiceImpl implements BookingService {
             if (booking != null && response != null) {
                 booking.setTransactionId(response.getTransactionId());
                 bookingRepository.save(booking);
-            } else {
-                throw new RuntimeException("Booking not found or Invalid payment response");
             }
 
             return response; // Return the response from the payment service
         } catch (Exception e) {
-            LOGGER.error("Error processing payment for booking ID: {}. Error Details: {}", bookingId, e.getMessage());
+            LOGGER.error("Error processing payment for booking ID: {}", bookingId, e);
             throw new RuntimeException("Error processing payment", e);
-
         }
     }
-
 
 
     @Override
@@ -84,27 +81,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(bookingId).orElse(null);
     }
 
-//    @Override
-//    public PaymentDTO processPayment(int bookingId, PaymentRequest paymentRequest) {
-//
-//        // Communicate with the Payment Service
-//        PaymentDTO response = restTemplate.postForObject(paymentServiceUrl, paymentRequest, PaymentDTO.class);
-//
-//        // Now update the booking information with the transaction ID received from the payment service
-//        BookingInfoEntity booking = bookingRepository.findById(bookingId).orElse(null);
-//        if (booking != null && response != null) {
-//            booking.setTransactionId(response.getTransactionId());
-//            bookingRepository.save(booking);
-//        }
-//
-//        return response; // Return the response from the payment service
-//    }
 
-    private List<String> getRandomNumbers(int count){
+    private List<String> getRandomNumbers(int count) {
         Random rand = new Random();
         int upperBound = 100;
         List<String> numberList = new ArrayList<>();
-        for (int i=0; i<count; i++){
+        for (int i = 0; i < count; i++) {
             numberList.add(String.valueOf(rand.nextInt(upperBound)));
         }
         return numberList;

@@ -27,4 +27,5 @@ public class BookingInfoEntity {
     private int roomPrice;
     private int transactionId;
     private LocalDateTime bookedOn;
+
 }

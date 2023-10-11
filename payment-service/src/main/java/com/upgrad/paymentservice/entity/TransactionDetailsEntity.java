@@ -12,13 +12,13 @@ public class TransactionDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(nullable = false)
     private String paymentMode;
 
     @Column(nullable = false)
-    private Integer bookingId;
+    private int bookingId;
 
     @Column(nullable = true)
     private String upiId;

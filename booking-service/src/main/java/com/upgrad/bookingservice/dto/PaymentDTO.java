@@ -9,4 +9,9 @@ public class PaymentDTO {
     private int transactionId;
     private String status;
 
+    public PaymentDTO(int transactionId) {
+        this.transactionId = transactionId;
+    }
+
 }
+
