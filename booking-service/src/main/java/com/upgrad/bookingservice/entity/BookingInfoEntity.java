@@ -22,7 +22,7 @@ public class BookingInfoEntity {
     private String aadharNumber;
     @Column(nullable = false)
     private int numOfRooms;
-    @Column(length = 10)
+    @Column(length = 50)
     private String roomNumbers;
     private int roomPrice;
     private int transactionId;
