@@ -50,15 +50,15 @@ public class BookingController {
             return new ResponseEntity<>(new ErrorResponse("Invalid mode of payment", 400), HttpStatus.BAD_REQUEST);
         }
         try {
-            PaymentDTO transactionResponse = bookingService.processPayment(bookingId, paymentRequest);
-            if (transactionResponse == null) {
+            BookingInfoEntity updatedBooking = bookingService.getBookingById(bookingId);
+            if (updatedBooking == null || paymentRequest.getBookingId() != bookingId) {
+                LOGGER.warn("No booking found with ID: {}", bookingId);
                 return new ResponseEntity<>(new ErrorResponse("Invalid Booking Id", 400), HttpStatus.BAD_REQUEST);
             }
 
-            BookingInfoEntity updatedBooking = bookingService.getBookingById(bookingId);
-            if (updatedBooking == null) {
-                LOGGER.warn("No booking found with ID: {}", bookingId);
-                return new ResponseEntity<>(new ErrorResponse("Booking not found", 404), HttpStatus.NOT_FOUND);
+            PaymentDTO transactionResponse = bookingService.processPayment(bookingId, paymentRequest);
+            if (transactionResponse == null) {
+                return new ResponseEntity<>(new ErrorResponse("Invalid Booking Id", 400), HttpStatus.BAD_REQUEST);
             }
 
             BookingDTO savedBookingDTO = modelMapper.map(updatedBooking, BookingDTO.class);

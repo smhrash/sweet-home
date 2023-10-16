@@ -20,9 +20,12 @@ public class PaymentServiceController {
     PaymentService paymentService;
 
     @PostMapping("/transaction")
-    public ResponseEntity<Integer> initiatePayment(@RequestBody TransactionDetailsEntity transactionDetails) {
+    public ResponseEntity<?> initiatePayment(@RequestBody TransactionDetailsEntity transactionDetails) {
+        if (!"UPI".equals(transactionDetails.getPaymentMode()) && !"CARD".equals(transactionDetails.getPaymentMode())) {
+            return new ResponseEntity<>(new ErrorResponse("Invalid mode of payment", 400), HttpStatus.BAD_REQUEST);
+        }
         TransactionDetailsEntity savedTransaction = paymentService.saveTransaction(transactionDetails);
-        return new ResponseEntity<>(savedTransaction.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(savedTransaction.getTransactionId(), HttpStatus.CREATED);
     }
 
     @GetMapping("/transaction/{transactionId}")

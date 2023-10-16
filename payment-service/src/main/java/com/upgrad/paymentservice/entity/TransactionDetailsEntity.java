@@ -12,7 +12,7 @@ public class TransactionDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int transactionId;
 
     @Column(nullable = false)
     private String paymentMode;

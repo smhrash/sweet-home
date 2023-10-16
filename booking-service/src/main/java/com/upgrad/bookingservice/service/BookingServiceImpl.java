@@ -45,6 +45,9 @@ public class BookingServiceImpl implements BookingService {
 
             // Calculate room price
             long days = ChronoUnit.DAYS.between(booking.getFromDate(), booking.getToDate());
+            if (days < 0) {
+                throw new IllegalArgumentException("End date can not be before Start date!");
+            }
             int roomPrice = 1000 * booking.getNumOfRooms() * (int) days;
             booking.setRoomPrice(roomPrice);
 
@@ -53,7 +56,6 @@ public class BookingServiceImpl implements BookingService {
             e.printStackTrace();
             throw e;
         }
-
     }
 
     @Override

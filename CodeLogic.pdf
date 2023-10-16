@@ -20,6 +20,7 @@ Provide a brief overview of the entire project, its objectives, and the services
 2.1. Booking Service:
 
 Objective: Briefly mention the objective of the Booking Service. For example, handling user bookings, maintaining records, etc.
+
 Endpoints and Logic:
 /booking: Describe the logic to generate random room numbers, calculate room price, and save booking details in the database.
 /booking/{bookingId}/transaction: Discuss the logic of communicating with the Payment Service, updating the transaction ID, and handling exceptions.
@@ -27,6 +28,7 @@ Endpoints and Logic:
 2.2. Payment Service:
 
 Objective: Briefly explain the role of the Payment Service, such as processing payments and storing transaction details.
+
 Endpoints and Logic:
 /payment/transaction: Describe the logic of initiating a payment, storing transaction details, and returning a transaction ID.
 /payment/transaction/{transactionId}: Explain how this endpoint fetches transaction details.
@@ -37,17 +39,25 @@ Prerequisites: Mention any software/tools required, like Java (OpenJDK 11), Mave
 
 Setup:
 Cloning the Repository / unzip the folder: Provide the Git command and URL. As per submitting requirement, I have added zip file, please unzip it and then run.
+
 Building the Project: Instructions to build each service, probably using Maven (mvn clean install).
+
 Setting Up Databases: Any initial setup for databases, if required.
+
 Running the Services:
 Starting Service Discovery (Eureka): Command/instructions to run the Eureka server.
 Running Booking Service: Instructions to start the Booking Service, specifying the port number.
 Running Payment Service: Similar to the Booking Service, instructions to start the Payment Service.
 Running Api Service: Similar to the Booking Service, instructions to start the Payment Service.
 
-4. Conclusion:
+Team members: 1. Sarker Mohammed Harun Or Rashid
+              2. Amer Al-Qubati
+              3. Reeve Lobo
 
-A brief wrap-up of the project, its components, and any additional notes for the graders.
+Members contribution on Project: Sarker and Amer have equally contributed to create project, test the services,
+                                 and refactored code to fulfill the requirements.
+
+4. Conclusion: A brief wrap-up of the project, its components, and any additional notes for the graders.
 
 
 
