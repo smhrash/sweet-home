@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -33,6 +34,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingInfoEntity createBooking(BookingInfoEntity booking) {
+        // If bookedOn is null, set the current date-time
+        if (booking.getBookedOn() == null) {
+            booking.setBookedOn(LocalDateTime.now());
+        }
+
         // Validate if fromDate and toDate are present
         if (booking.getFromDate() == null || booking.getToDate() == null) {
             throw new IllegalArgumentException("Booking dates can't be null");

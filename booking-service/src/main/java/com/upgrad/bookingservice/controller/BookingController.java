@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +33,17 @@ public class BookingController {
     @PostMapping(value = "/booking", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookingDTO) {
-        bookingDTO.setBookedOn(LocalDateTime.now()); // Set the current date-time
+        // Ensure fromDate and toDate have time set to 00:00:00 if not provided
+        if (bookingDTO.getFromDate().getHour() == 0 && bookingDTO.getFromDate().getMinute() == 0) {
+            bookingDTO.setFromDate(bookingDTO.getFromDate().withHour(0).withMinute(0).withSecond(0));
+        }
+        if (bookingDTO.getToDate().getHour() == 0 && bookingDTO.getToDate().getMinute() == 0) {
+            bookingDTO.setToDate(bookingDTO.getToDate().withHour(0).withMinute(0).withSecond(0));
+        }
+
         BookingInfoEntity newBooking = modelMapper.map(bookingDTO, BookingInfoEntity.class);
         BookingInfoEntity savedBooking = bookingService.createBooking(newBooking);
         BookingDTO savedBookingDTO = modelMapper.map(savedBooking, BookingDTO.class);
-
         return new ResponseEntity<>(savedBookingDTO, HttpStatus.CREATED);
     }
 

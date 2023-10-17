@@ -1,5 +1,7 @@
 package com.upgrad.bookingservice.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.upgrad.bookingservice.config.CustomLocalDateTimeDeserializer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,9 @@ import java.time.LocalDateTime;
 public class BookingDTO {
 
     private int bookingId;
+    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime fromDate;
+    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime toDate;
     private String aadharNumber;
     private int numOfRooms;
