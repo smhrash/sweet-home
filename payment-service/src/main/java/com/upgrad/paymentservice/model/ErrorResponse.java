@@ -1,4 +1,4 @@
-package com.upgrad.paymentservice.controller;
+package com.upgrad.paymentservice.model;
 
 import lombok.Getter;
 import lombok.Setter;

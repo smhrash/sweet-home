@@ -1,6 +1,7 @@
 package com.upgrad.paymentservice.controller;
 
 import com.upgrad.paymentservice.entity.TransactionDetailsEntity;
+import com.upgrad.paymentservice.model.ErrorResponse;
 import com.upgrad.paymentservice.model.PaymentResponseVO;
 import com.upgrad.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
